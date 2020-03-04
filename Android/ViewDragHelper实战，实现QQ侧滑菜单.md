@@ -24,6 +24,80 @@
 
 - 内容部分，同上，和菜单部分同一个层级，被SlidingMenu控件包裹。不难发现我们的效果中，打开菜单时，内容区域会有一个黑色遮罩，根据滑动的距离从透明到半透明，所以内容部分还有一个遮罩。
 
+### xml布局
+
+- 总布局
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.zh.android.slidingmenu.sample.SlidingMenu
+        android:id="@+id/sliding_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_menu" />
+
+        <include layout="@layout/layout_content" />
+    </com.zh.android.slidingmenu.sample.SlidingMenu>
+</FrameLayout>
+```
+
+- 菜单布局
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_list"
+    android:layout_width="280dp"
+    android:layout_height="match_parent" />
+```
+
+- 内容布局
+
+```
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            app:title="@string/app_name"
+            app:titleTextColor="@android:color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/content_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/content_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="#8C000000"
+        tools:alpha="1" />
+</FrameLayout>
+```
+
 #### 行为分析
 
  - 打开菜单
@@ -296,6 +370,7 @@ private void init(@NonNull Context context, @Nullable AttributeSet attrs, int de
                     int newLeft = vMenuView.getLeft() + dx;
                     vMenuView.layout(newLeft, top, left, getBottom());
                 }
+                //处理滑动中的回调，计算滑动比值
                 if (mMenuStateChangeListener != null) {
                     float fraction = (vContentView.getLeft() * 1f) / vMenuView.getWidth();
                     mMenuStateChangeListener.onSliding(fraction);
@@ -378,6 +453,91 @@ private void init(@NonNull Context context, @Nullable AttributeSet attrs, int de
 }
 
 //...省略其他代码
+```
+
+- 遮罩
+
+上面说到内容区域有一个遮罩，当菜单从关闭到打开的过程中，是从亮到黑，其实就是一个半透明的遮罩，它的透明度从0到1的过程。
+我们可以以内容区域的左边距（就是left值）为起点，和菜单View的宽度做一个比值，将比值交给回调，外部收到回调时，再进行遮罩透明度设置。
+
+```
+@Override
+public void onViewPositionChanged(@NonNull View changedView, int left, int top, int dx, int dy) {
+    super.onViewPositionChanged(changedView, left, top, dx, dy);
+    ...
+    //处理滑动中的回调，计算滑动比值
+    if (mMenuStateChangeListener != null) {
+        float fraction = (vContentView.getLeft() * 1f) / vMenuView.getWidth();
+        mMenuStateChangeListener.onSliding(fraction);
+    }
+    ...
+}
+```
+
+设置回调，处理遮罩透明度
+
+```
+public class MainActivity extends AppCompatActivity {
+    /**
+     * 侧滑菜单
+     */
+    private SlidingMenu vSlidingMenu;
+
+    /**
+     * 透明度估值器
+     */
+    private FloatEvaluator mAlphaEvaluator;
+    
+        @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        findView();
+        bindView();
+    }
+
+    private void findView() {
+        ...省略其他控件
+        
+        vSlidingMenu = findViewById(R.id.sliding_menu);
+        vContentBg = findViewById(R.id.content_bg);
+        
+        ...省略其他控件
+    }
+    
+    private void bindView() {
+        //创建估值器
+        mAlphaEvaluator = new FloatEvaluator();
+        //------------ 重点：设置侧滑菜单的状态切换监听 ------------
+        vSlidingMenu.setOnMenuStateChangeListener(new SlidingMenu.OnMenuStateChangeListener() {
+            @Override
+            public void onMenuOpen() {
+                Log.d(TAG, "菜单打开");
+                //让黑色遮罩，禁用触摸
+                vContentBg.setClickable(true);
+            }
+
+            @Override
+            public void onSliding(float fraction) {
+                Log.d(TAG, "菜单拽托中，百分比：" + fraction);
+                //设定最小、最大透明度值
+                float startValue = 0;
+                float endValue = 0.55f;
+                //估值当前的透明度值，并设置
+                Float value = mAlphaEvaluator.evaluate(fraction, startValue, endValue);
+                vContentBg.setAlpha(value);
+            }
+
+            @Override
+            public void onMenuClose() {
+                Log.d(TAG, "菜单关闭");
+                //让黑色遮罩，恢复触摸
+                vContentBg.setClickable(false);
+            }
+        });
+        //------------ 重点：设置侧滑菜单的状态切换监听 ------------
+    }
+}
 ```
 
 #### 完整代码
@@ -478,6 +638,7 @@ public class SlidingMenu extends FrameLayout {
                     int newLeft = vMenuView.getLeft() + dx;
                     vMenuView.layout(newLeft, top, left, getBottom());
                 }
+                //处理滑动中的回调，计算滑动比值
                 if (mMenuStateChangeListener != null) {
                     float fraction = (vContentView.getLeft() * 1f) / vMenuView.getWidth();
                     mMenuStateChangeListener.onSliding(fraction);
@@ -615,148 +776,6 @@ public class SlidingMenu extends FrameLayout {
      */
     public void setOnMenuStateChangeListener(OnMenuStateChangeListener menuStateChangeListener) {
         mMenuStateChangeListener = menuStateChangeListener;
-    }
-}
-```
-
-## 基本使用
-
-### xml布局
-
-- 总布局
-
-```
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <com.zh.android.slidingmenu.sample.SlidingMenu
-        android:id="@+id/sliding_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/layout_menu" />
-
-        <include layout="@layout/layout_content" />
-    </com.zh.android.slidingmenu.sample.SlidingMenu>
-</FrameLayout>
-```
-
-- 菜单布局
-
-```
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu_list"
-    android:layout_width="280dp"
-    android:layout_height="match_parent" />
-```
-
-- 内容布局
-
-```
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tool_bar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorPrimary"
-            app:title="@string/app_name"
-            app:titleTextColor="@android:color/white" />
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/content_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/content_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:background="#8C000000"
-        tools:alpha="1" />
-</FrameLayout>
-```
-
-### Java代码
-
-```
-public class MainActivity extends AppCompatActivity {
-    /**
-     * 侧滑菜单
-     */
-    private SlidingMenu vSlidingMenu;
-
-    /**
-     * 透明度估值器
-     */
-    private FloatEvaluator mAlphaEvaluator;
-    
-        @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        findView();
-        bindView();
-    }
-
-    private void findView() {
-        ...省略其他控件
-        
-        vSlidingMenu = findViewById(R.id.sliding_menu);
-        vContentBg = findViewById(R.id.content_bg);
-        
-        ...省略其他控件
-    }
-    
-    private void bindView() {
-        //创建估值器
-        mAlphaEvaluator = new FloatEvaluator();
-        //------------ 重点：设置侧滑菜单的状态切换监听 ------------
-        vSlidingMenu.setOnMenuStateChangeListener(new SlidingMenu.OnMenuStateChangeListener() {
-            @Override
-            public void onMenuOpen() {
-                Log.d(TAG, "菜单打开");
-                //让黑色遮罩，禁用触摸
-                vContentBg.setClickable(true);
-            }
-
-            @Override
-            public void onSliding(float fraction) {
-                Log.d(TAG, "菜单拽托中，百分比：" + fraction);
-                //设定最小、最大透明度值
-                float startValue = 0;
-                float endValue = 0.55f;
-                //估值当前的透明度值，并设置
-                Float value = mAlphaEvaluator.evaluate(fraction, startValue, endValue);
-                vContentBg.setAlpha(value);
-            }
-
-            @Override
-            public void onMenuClose() {
-                Log.d(TAG, "菜单关闭");
-                //让黑色遮罩，恢复触摸
-                vContentBg.setClickable(false);
-            }
-        });
-        //------------ 重点：设置侧滑菜单的状态切换监听 ------------
     }
 }
 ```
