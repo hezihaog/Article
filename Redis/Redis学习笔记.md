@@ -75,6 +75,31 @@ NoSQL数据库的产生就是为了解决大规模数据集合多重数据种类
 - 数据过期处理（可以精确到毫秒
 - 分布式集群架构中的session分离
 
+#### Redis安装
+
+- 下载地址
+
+    1. 官网：https://redis.io
+    2. 中文网：http://www.redis.net.cn/
+
+- Windows
+
+```
+解压直接可以使用：
+redis.windows.conf：配置文件
+redis-cli.exe：redis的客户端
+redis-server.exe：redis服务器端
+```
+
+- Mac
+
+1. 编译redis，在解压目录下，打开终端
+2. 输入make test命令
+3. 编译完成后，make install命令
+4. cd目录到src下，输入redis-server命令，出现Redis的logo即可
+5. 需要对Redis操作，则在src目录下，输入redis-cli登录客户端
+6. 停止Redis，则使用redis-cli SHUTDOWN命令即可
+
 #### Redis数据结构
 
 目前为止Redis支持的键值数据类型如下：
@@ -341,7 +366,7 @@ jedis.close();
 
 #### Jedis连接池常用配置
 
-Jedis常用配置，在JedisPool中都有提供对应的set方法。
+Jedis常用配置，在JedisPool中都有提供对应的set方法。一般会写一个JedisUtil，将这个properties配置读取，再设置到JedisPoolConfig中。
 
 ```
 #最大活动对象数
