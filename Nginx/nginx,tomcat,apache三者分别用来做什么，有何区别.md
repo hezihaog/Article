@@ -1,5 +1,3 @@
-#### nginx,tomcat,apache三者分别用来做什么，有何区别
-
 - Nginx和tomcat的区别
 
 nginx常用做静态内容服务和代理服务器，直接外来请求转发给后面的应用服务器（tomcat，Django等），tomcat更多用来做一个应用容器，让java web app跑在里面的东西。
@@ -25,3 +23,9 @@ Apache超稳定，对PHP支持比较检单，nginx需要配合其他后端用，
 - nignx的正向代理何反向代理
 
 正向代理：代表客户端去访问服务端，反向代理：代表服务端接待客户端。
+
+
+![](https://user-gold-cdn.xitu.io/2020/5/27/17256d33955dde62?w=1056&h=618&f=png&s=510642)
+
+
+![](https://user-gold-cdn.xitu.io/2020/5/27/17256d37e31e38e9?w=1082&h=518&f=png&s=473900)
