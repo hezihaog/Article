@@ -21,6 +21,8 @@ Oracle的驱动，在Maven中依赖，会报错说找不到，所以需要手动
 mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar -Dfile=ojdbc14.jar
 ```
 
+![](https://user-gold-cdn.xitu.io/2020/7/5/1731c7b9635203e5?w=570&h=452&f=png&s=63229)
+
 - 同步到的本地Maven仓库目录
 
 本地的仓库一般在用户目录下的.m2目录下，里面有一个repository子目录，再进去就是下载的各种jar包的包名的根目录
