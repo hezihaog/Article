@@ -49,7 +49,7 @@ pom.xml引入2个依赖，分别是netty和一个反射库
 </dependencies>
 ```
 
-#### 调用方的代码
+#### 调用方的业务代码
 
 先放一下调用的代码，远程调用都隐藏到了RPCProxy类中，调用和处理方法就和本地接口调用一样。
 
@@ -80,7 +80,7 @@ public class ConsumerMain {
 }
 ```
 
-#### 提供方的代码
+#### 提供方的业务代码
 
 我们的服务提供方是一个图书服务，提供获取热门书籍和保存书籍的功能
 
@@ -389,7 +389,7 @@ public class ResultHandler extends ChannelInboundHandlerAdapter {
 }
 ```
 
-#### 服务提供封装
+#### 服务提供方封装
 
 - InvokeHandler，其实是Netty消息的回调，当收到远程调用消息时，再反射调用本地方法
 
