@@ -202,7 +202,7 @@ rpc_lib主要是存放封装rpc功能的相关类。封装分为2类，client(�
 - server包
 	- CallInfo，调用的远程信息，封装方法名、形参、返回值等信息
 	- InvokeHandler，收到远程调用后，反射调用本地方法的处理类
-	- RPCServer，使用Netty作为服务器端的类，每个服务提供方，都要有一个类继承该类，调用start()方法来启动服务
+	- RPCServer，使用Netty作为服务器端的类，每个服务提供方，都要有一个启动类调用该类，调用start()方法来启动服务
 
 #### 服务调用方的封装
 
@@ -440,7 +440,7 @@ public class InvokeHandler extends ChannelInboundHandlerAdapter {
 }
 ```
 
-- RPCServer，服务提供方的远程服务入口，每个服务提供者，需要有一个类继承它，调用start()方法来启动Netty服务
+- RPCServer，服务提供方的远程服务入口，每个服务提供者，需要有一个启动类调用它，调用start()方法来启动Netty服务
 
 ```
 /**
