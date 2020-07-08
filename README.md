@@ -88,7 +88,18 @@
         - [仿微信切换按钮](https://github.com/hezihaog/Article/blob/master/Android/%E8%87%AA%E5%AE%9A%E4%B9%89View/%E4%BB%BF%E5%BE%AE%E4%BF%A1%E5%88%87%E6%8D%A2%E6%8C%89%E9%92%AE.md)
         - [自定义简单字母索引栏](https://github.com/hezihaog/Article/blob/master/Android/%E8%87%AA%E5%AE%9A%E4%B9%89View/%E8%87%AA%E5%AE%9A%E4%B9%89%E7%AE%80%E5%8D%95%E5%AD%97%E6%AF%8D%E7%B4%A2%E5%BC%95%E6%A0%8F.md)
         - [自定义语音录制按钮](https://github.com/hezihaog/Article/blob/master/Android/%E8%87%AA%E5%AE%9A%E4%B9%89View/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%AD%E9%9F%B3%E5%BD%95%E5%88%B6%E6%8C%89%E9%92%AE.md)
-        
+
+    - RxJava
+        - [RxJava日常使用总结（一）创建操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%80%EF%BC%89%E5%88%9B%E5%BB%BA%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（二）变换操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%8C%EF%BC%89%E5%8F%98%E6%8D%A2%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（三）过滤操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%89%EF%BC%89%E8%BF%87%E6%BB%A4%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（四）结合操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BB%93%E5%90%88%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（五）错误处理](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E4%BA%94%EF%BC%89%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86.md)
+        - [RxJava日常使用总结（六）辅助操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AD%EF%BC%89%E8%BE%85%E5%8A%A9%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（七）条件和布尔值操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E4%B8%83%EF%BC%89%E6%9D%A1%E4%BB%B6%E5%92%8C%E5%B8%83%E5%B0%94%E5%80%BC%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（八）算术和聚合操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E5%85%AB%EF%BC%89%E7%AE%97%E6%9C%AF%E5%92%8C%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C.md)
+        - [RxJava日常使用总结（九）连接操作](https://github.com/hezihaog/Article/blob/master/RxJava/RxJava%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93%EF%BC%88%E4%B9%9D%EF%BC%89%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C.md)
+
     - 设计模式
         - [Context中的装饰器模式](https://github.com/hezihaog/Article/blob/master/Android/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/Context%E4%B8%AD%E7%9A%84%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F.md)
         - [构建简易缓存池](https://github.com/hezihaog/Article/blob/master/Android/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%9E%84%E5%BB%BA%E7%AE%80%E6%98%93%E7%BC%93%E5%AD%98%E6%B1%A0.md)
@@ -150,5 +161,74 @@
         - [Java并发系列：线程池ThreadPoolExecutor](https://github.com/hezihaog/Article/blob/master/Java%E5%B9%B6%E5%8F%91%E7%B3%BB%E5%88%97/Java%E5%B9%B6%E5%8F%91%E7%B3%BB%E5%88%97%EF%BC%9A%E7%BA%BF%E7%A8%8B%E6%B1%A0ThreadPoolExecutor.md)
         - [Java并发系列：线程池ThreadPoolExecutor参数自定义](https://github.com/hezihaog/Article/blob/master/Java%E5%B9%B6%E5%8F%91%E7%B3%BB%E5%88%97/Java%E5%B9%B6%E5%8F%91%E7%B3%BB%E5%88%97%EF%BC%9A%E7%BA%BF%E7%A8%8B%E6%B1%A0ThreadPoolExecutor%E5%8F%82%E6%95%B0%E8%87%AA%E5%AE%9A%E4%B9%89.md)
   
+    - Spring
+        - [Spring学习之XML方式](https://github.com/hezihaog/Article/blob/master/Spring/Spring%E5%AD%A6%E4%B9%A0%E4%B9%8BXML%E6%96%B9%E5%BC%8F.md)
+        - [Spring学习之注解方式](https://github.com/hezihaog/Article/blob/master/Spring/Spring%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F.md)
+        - [Spring学习之JavaConfig方式](https://github.com/hezihaog/Article/blob/master/Spring/Spring%E5%AD%A6%E4%B9%A0%E4%B9%8BJavaConfig%E6%96%B9%E5%BC%8F.md)
+        
+    - SpringMVC
+        - [SpringMVC表单提交中文乱码问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98.md)        
+        - [SpringMVC解决跨域问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98.md)
+    
+    - SSM
+            - [SSM整合](https://github.com/hezihaog/Article/blob/master/SSM/SSM%E6%95%B4%E5%90%88.md)
+            
+    - Tomcat
+        - [IDEA运行Tomcat出现error=13 Permission denied.md](https://github.com/hezihaog/Article/blob/master/Tomcat/IDEA%E8%BF%90%E8%A1%8CTomcat%E5%87%BA%E7%8E%B0error%3D13%20Permission%20denied.md)
+    
+    - Linux
+        - [Linux常用指令](https://github.com/hezihaog/Article/blob/master/Linux/Linux%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4.md)
+    
+    - Redis
+        - [Redis学习笔记](https://github.com/hezihaog/Article/blob/master/Redis/Redis%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
+    
+    - Nginx
+        - [Linux下安装Nginx流程和问题记录](https://github.com/hezihaog/Article/blob/master/Nginx/Linux%E4%B8%8B%E5%AE%89%E8%A3%85Nginx%E6%B5%81%E7%A8%8B%E5%92%8C%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95.md)
+        - [nginx,tomcat,apache三者分别用来做什么，有何区别](https://github.com/hezihaog/Article/blob/master/Nginx/nginx%2Ctomcat%2Capache%E4%B8%89%E8%80%85%E5%88%86%E5%88%AB%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%8C%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB.md)
+    
+    - MySQL
+        - [Mac系统MySQL重置密码](https://github.com/hezihaog/Article/blob/master/MySQL/Mac%E7%B3%BB%E7%BB%9FMySQL%E9%87%8D%E7%BD%AE%E5%AF%86%E7%A0%81.md)
+        - [Mac系统下MySQL解决中文乱码问题](https://github.com/hezihaog/Article/blob/master/MySQL/Mac%E7%B3%BB%E7%BB%9F%E4%B8%8BMySQL%E8%A7%A3%E5%86%B3%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98.md)
+    
+    - Oracle
+        - [解决Maven依赖Oracle驱动ojdbc14找不到的问题](https://github.com/hezihaog/Article/blob/master/Oracle/%E8%A7%A3%E5%86%B3Maven%E4%BE%9D%E8%B5%96Oracle%E9%A9%B1%E5%8A%A8ojdbc14%E6%89%BE%E4%B8%8D%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98.md)
+    
+    - MongoDB
+        - [mac安装mongodb](https://github.com/hezihaog/Article/blob/master/MongoDB/mac%E5%AE%89%E8%A3%85mongodb.md)
+    
+    - Netty
+        - [使用Netty实现简单RPC调用](https://github.com/hezihaog/Article/blob/master/Netty/%E4%BD%BF%E7%94%A8Netty%E5%AE%9E%E7%8E%B0%E7%AE%80%E5%8D%95RPC%E8%B0%83%E7%94%A8.md)
+    
     - Docker
         - [Docker使用](https://github.com/hezihaog/Article/blob/master/Docker/Docker%E4%BD%BF%E7%94%A8.md)
+        
+- iOS
+    
+    - Cocopods
+        - [Cocopods安装和使用](https://github.com/hezihaog/Article/blob/master/iOS/Cocopods/Cocopods%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8.md)
+        
+    - Object-C
+        - [Object-C学习（一）数据类型、常量、变量](https://github.com/hezihaog/Article/blob/master/iOS/Object-C/Object-C%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E3%80%81%E5%B8%B8%E9%87%8F%E3%80%81%E5%8F%98%E9%87%8F.md)
+        - [Object-C 常用格式化占位符](https://github.com/hezihaog/Article/blob/master/iOS/Object-C/Object-C%20%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%8D%A0%E4%BD%8D%E7%AC%A6.md)
+        
+    - Xcode
+        - [Xcode10 PCH预编译头文件的配置和使用](https://github.com/hezihaog/Article/blob/master/iOS/Xcode/Xcode10%20PCH%E9%A2%84%E7%BC%96%E8%AF%91%E5%A4%B4%E6%96%87%E4%BB%B6%E7%9A%84%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8.md)
+        
+    - iPhone
+        - [UIViewController、Activity生命周期异同](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/UIViewController%E3%80%81Activity%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%BC%82%E5%90%8C.md)
+        - [iOS-UINavigationController基本使用](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UINavigationController%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
+        - [iOS-UITabBarController基本使用](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UITabBarController%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
+        - [iOS-UIScrollView基本使用和按页滚动](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UIScrollView%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%92%8C%E6%8C%89%E9%A1%B5%E6%BB%9A%E5%8A%A8.md)
+        - [iOS-NSUserDefaults使用](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-NSUserDefaults%E4%BD%BF%E7%94%A8.md)
+        - [iOS-UIActivityIndicatorView基本使用](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UIActivityIndicatorView%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
+        - [iOS-UIRefreshControl自带刷新控件](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UIRefreshControl%E8%87%AA%E5%B8%A6%E5%88%B7%E6%96%B0%E6%8E%A7%E4%BB%B6.md)
+        - [iOS-UISlider拖动条、UIProgress进度条](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UISlider%E6%8B%96%E5%8A%A8%E6%9D%A1%E3%80%81UIProgress%E8%BF%9B%E5%BA%A6%E6%9D%A1.md)
+        - [iOS-UISwitch开关基本使用](https://github.com/hezihaog/Article/blob/master/iOS/iPhone/iOS-UISwitch%E5%BC%80%E5%85%B3%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
+        
+- MacOS
+    
+    - 配置
+        - [Mac环境变量配置](https://github.com/hezihaog/Article/blob/master/MacOS/Mac%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE.md)
+    
+    - 问题
+        - [安装 macOS xxxx”应用程序副本已损坏，不能用来安装macOS的解决方法](https://github.com/hezihaog/Article/blob/master/MacOS/%E5%AE%89%E8%A3%85%20macOS%20xxxx%E2%80%9D%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%89%AF%E6%9C%AC%E5%B7%B2%E6%8D%9F%E5%9D%8F%EF%BC%8C%E4%B8%8D%E8%83%BD%E7%94%A8%E6%9D%A5%E5%AE%89%E8%A3%85macOS%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95.md)
