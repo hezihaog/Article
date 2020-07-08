@@ -171,7 +171,10 @@
         - [SpringMVC解决跨域问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98.md)
     
     - SSM
-            - [SSM整合](https://github.com/hezihaog/Article/blob/master/SSM/SSM%E6%95%B4%E5%90%88.md)
+        - [SSM整合](https://github.com/hezihaog/Article/blob/master/SSM/SSM%E6%95%B4%E5%90%88.md)
+            
+    - SpringBoot
+        - [SpringBoot整合MyBatisPlus.md](https://github.com/hezihaog/Article/blob/master/SpringBoot/SpringBoot%E6%95%B4%E5%90%88MyBatisPlus.md)
             
     - Tomcat
         - [IDEA运行Tomcat出现error=13 Permission denied.md](https://github.com/hezihaog/Article/blob/master/Tomcat/IDEA%E8%BF%90%E8%A1%8CTomcat%E5%87%BA%E7%8E%B0error%3D13%20Permission%20denied.md)
