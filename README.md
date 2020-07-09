@@ -172,6 +172,9 @@
         - [SpringMVC表单提交中文乱码问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98.md)        
         - [SpringMVC解决跨域问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98.md)
     
+    - MyBatis
+        - [MyBatis使用](https://github.com/hezihaog/Article/blob/master/MyBatis/MyBatis%E4%BD%BF%E7%94%A8.md)
+    
     - SSM
         - [SSM整合](https://github.com/hezihaog/Article/blob/master/SSM/SSM%E6%95%B4%E5%90%88.md)
             
