@@ -167,6 +167,8 @@
         - [Spring学习之JavaConfig方式](https://github.com/hezihaog/Article/blob/master/Spring/Spring%E5%AD%A6%E4%B9%A0%E4%B9%8BJavaConfig%E6%96%B9%E5%BC%8F.md)
         
     - SpringMVC
+        - [SpringMVC入门使用](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8.md)
+        - [SpringMVC文件上传，找不到FileItemFactory](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%EF%BC%8C%E6%89%BE%E4%B8%8D%E5%88%B0FileItemFactory.md)
         - [SpringMVC表单提交中文乱码问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98.md)        
         - [SpringMVC解决跨域问题](https://github.com/hezihaog/Article/blob/master/SpringMVC/SpringMVC%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98.md)
     
