@@ -19,6 +19,9 @@
     - WebView
         - [Android WebView和Js交互](https://github.com/hezihaog/Article/blob/master/Android/WebView/Android%20WebView%E5%92%8CJs%E4%BA%A4%E4%BA%92.md)
         
+    - 刷机
+        - [ADB常用命令和操作](https://github.com/hezihaog/Article/blob/master/Android/%E5%88%B7%E6%9C%BA/ADB%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%92%8C%E6%93%8D%E4%BD%9C.md)
+        
     - 坑
         - [Android 7.x Toast BadTokenException处理](https://github.com/hezihaog/Article/blob/master/Android/%E5%9D%91/Android%207.x%20Toast%20BadTokenException%E5%A4%84%E7%90%86.md)
         - [Android 透明状态栏和软键盘配合的坑](https://github.com/hezihaog/Article/blob/master/Android/%E5%9D%91/Android%20%E9%80%8F%E6%98%8E%E7%8A%B6%E6%80%81%E6%A0%8F%E5%92%8C%E8%BD%AF%E9%94%AE%E7%9B%98%E9%85%8D%E5%90%88%E7%9A%84%E5%9D%91.md)
