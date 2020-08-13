@@ -249,3 +249,34 @@
         - groupadd shaolin，新增shaolin组
         - usermod -g shaolin zwj，将zwj的组修改为shaolin
         - id zwj，查看zwj的用户信息，uid=503(zwj) gid=504(shaolin) 组=504(shaolin)
+        
+## /etc/passwd 文件
+
+用户（user）的配置文件，记录用户的各种信息
+
+- root:x:0:0:root:/root:/bin/bash
+- zf:x:502:502::/home/zf:/bin/bash
+- zwj:x:503:504::/home/zwj:/bin/bash
+
+每行的含义：用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录 Shell
+
+## /etc/shadow 文件
+
+口令的配置文件
+
+- root:$6$PO73HfawEuegVIfS$OxGAx6TzOYSwImLYbyqq.ERoDLZHeAw9OYLseV3H99rTbffNLq/ssiqLG87kX7nSVlAH.qPDX4vT1XAUAOvZc/:18486:0:99999:7:::
+- zf:$6$41mu2iCP$jerQRpDcmqQC7XvnQawEu6FaNSCRv8Ot5MlW30q9ai7YKecGHH3.WnLk0N52Q.pc8xbI/SxWJHtqFmSdVSj2k/:18486:0:99999:7:::
+- zwj:!!:18486:0:99999:7:::
+每行的含义：登录名:加密口令:最后一次修改时间:最小时间间隔:最大时间间隔:警告时间:不活动 时间:失效时间:标志
+
+## /etc/group 文件
+
+组(group)的配置文件，记录 Linux 包含的组的信息
+
+- xm:x:500:
+- xq:x:501:
+- zf:x:502:
+- wudang:x:503:
+- shaolin:x:504:
+
+每行含义：组名:口令:组标识号:组内用户列表
