@@ -621,4 +621,102 @@ tail 用于输出文件中尾部的内容，默认情况下 tail 指令显示文
     - date -s 字符串时间（和之前不一样的就是加-s参数）
     
 - 案例
-    - 设置系统当前时间 ， 比如设置成 2018-10-10 11:22:22
+    - 设置系统当前时间 ， 比如设置成 2018-10-10 11:22:22，输入：date -s "2018-10-10 11:22:22"
+    
+### cal 指令
+
+查看日历指令
+
+- 语法
+    - cal [选项] （功能描述：不加选项，显示本月日历）
+    
+- 案例
+    - 显示当前日历，输入：cal
+    - 显示 2020 年的日历，输入 cal 2020
+    
+# 搜索查找类
+
+## find 指令
+
+find 指令将从指定目录向下递归地遍历其各个子目录，将满足条件的文件或者目录显示在终端
+
+- 语法
+    - find [搜索范围] [选项]
+   
+- 选项说明
+    - -name<查询> 按照指令的文件名查找模式查找文件
+    - -user<用户名> 查找属于指定用户名所有文件
+    - -size<文件大小> 按照指定的文件大小查找文件
+    
+- 案例
+    - 按文件名：根据名称查找/home 目录下的 hello.txt 文件。输入：find /home/ -name hello.txt
+    - 按拥有者：查找/opt 目录下，用户名称为 nobody 的文件。输入：find /opt/ -user nobody
+    - 查找整个 linux 系统下大于 20m 的文件（+n 大于 -n 小于 n 等于）。输入：find / -size +20M
+    - 查询整个 linux 系统下大于 20k 的文件。输入：find / -size 20k
+    - 查询 / 目录下，所有 .txt 的文件。输入：find -name *.txt
+    
+## locate 指令
+
+locate 指令可以快速定位文件路径。 locate 指令利用事先建立的系统中所有文件名称及路径的 locate 数据库实现快速定位给定的文件。Locate 指令无需遍历整个文件系统，查询速度较快。为了保证查询结果的准确度，管理员必须定期更新 locate 时刻。
+
+- 语法
+    - locate 搜索文件
+    
+- 特别说明
+    - 由于 locate 指令基于数据库进行查询，所以第一次运行前，必须使用 updatedb 指令创建 locate 数 据库。
+    
+- 案例
+    - 请使用 locate 指令快速定位 hello.txt 文件所在目录。
+        - 创建或更新locate数据库：updatedb
+        - 查询hello.txt文件：locate hello.txt
+        
+## grep 指令和 管道符号 |
+
+grep 过滤查找 ， 管道符，“|”，表示将前一个命令的处理结果输出传递给后面的命令处理。
+
+- 语法
+    - grep [选项] 查找内容 源文件
+    
+- 常用选项
+    - `-n` 显示匹配行以及行号
+    - `-i` 忽略字母大小写
+    
+- 案例
+    - 在 hello.txt 文件中，查找 "yes" 所在行，并且显示行号。输入：cat hello.txt | grep -n yes
+    - 在 hello.txt文件中，查找 "no" 所在行，忽略大小写，并且显示行号（忽略大小写、显示行号，有2个参数）。输入：cat hello.txt | grep -ni no
+    
+# 压缩和解压类
+
+## gzip/gunzip 指令
+
+gzip 用于压缩文件， gunzip 用于解压的
+
+- 语法
+    - gzip 文件 （功能描述：压缩文件，只能将文件压缩为*.gz 文件）
+    - gunzip 文件.gz （功能描述：解压缩文件命令）
+    
+- 细节
+    - gzip指令进行压缩后，不会保留原来的文件
+    - 同理，gunzip指令解压缩后，压缩包也不保留
+    
+- 案例
+    - gzip 压缩， 将 /home 下的 hello.txt 文件进行压缩。输入：gzip hello.txt
+    - gunzip 压缩， 将 /home 下的 hello.txt.gz 文件进行解压缩。输入：gunzip hello.txt.gz
+    
+## zip/unzip 指令
+
+zip 用于压缩文件， unzip 用于解压的，这个在项目打包发布中很有用的
+
+- 语法
+    - zip [选项] XXX.zip 将要压缩的内容（功能描述：压缩文件和目录的命令）
+    - unzip [选项] XXX.zip （功能描述：解压缩文件）
+    
+- zip的常用选项
+    - -r：递归压缩，即压缩目录
+    
+- unzip的常用选项
+    - -d<目录> ：指定解压后文件的存放目录
+    
+- 案例
+    - 将 /home 下的 所有文件进行压缩成 mypackage.zip。输入：zip -r mypackage.zip /home/
+    - 将 mypackge.zip 解压到 /opt/tmp 目录下。输入：unzip -d /opt/tmp mypackage.zip
