@@ -720,3 +720,31 @@ zip 用于压缩文件， unzip 用于解压的，这个在项目打包发布中
 - 案例
     - 将 /home 下的 所有文件进行压缩成 mypackage.zip。输入：zip -r mypackage.zip /home/
     - 将 mypackge.zip 解压到 /opt/tmp 目录下。输入：unzip -d /opt/tmp mypackage.zip
+    
+## tar 指令
+
+tar 指令 是打包指令，最后打包后的文件是 .tar.gz 的文件
+
+- 语法
+    - tar [选项] XXX.tar.gz 打包的内容 (功能描述：打包目录，压缩后的文件格式.tar.gz)
+    
+- 选项
+    - `-c` 产生.tar打包文件
+    - `-v` 显示详细信息
+    - `-f` 指定压缩后的文件名
+    - `-z` 打包同时压缩
+    - `-x` 解包.tar文件
+    
+- 提示（压缩和解压就相差一个参数，压缩有c，解压则是x）
+    - 压缩常用组合：tar -zcvf 压缩后文件名 要压缩的文件（可多个，空格隔开）
+    - 解压常用组合：tar -zxvf 要解压的文件名 目标解压目录
+    
+- 案例
+    - 压缩多个文件，将 /home/a1.txt 和 /home/a2.txt 压缩成 a.tar.gz。
+        - 输入：tar -zcvf a.tar.gz a1.txt a2.txt
+    - 将/home 的文件夹 压缩成 myhome.tar.gz
+        - 输入：tar -zcvf myhome.tar.gz /home/
+    - 将 a.tar.gz 解压到当前目录
+        - 输入：tar -zxvf a.tar.gz
+    - 将 myhome.tar.gz 解压到 /opt/ 目录下（主要要加-C参数，并且确保解压到的目录事先要存在，否则会报错）
+        - 输入：tar zxvf myhome.tar.gz -C /opt/tmp2/
