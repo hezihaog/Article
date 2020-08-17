@@ -18,7 +18,7 @@ cd /etc/sysconfig/network-scripts/
 ls
 ```
 
-- 使用vim打开文件，将onboot选项设置为yes，默认为no
+- 使用vi或vim打开文件，将onboot选项设置为yes，默认为no
 
 ```
 ONBOOT=yes
