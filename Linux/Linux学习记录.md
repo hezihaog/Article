@@ -972,3 +972,45 @@ tar 指令 是打包指令，最后打包后的文件是 .tar.gz 的文件
         - chgrp bandit /home/abc.txt，修改/home/abc.txt文件的所在组修改为bandit
     - 请将 /home/kkk 目录下所有的文件和目录的所在组都修改成 bandit(土匪)
         - chgrp -R bandit /home/kkk，递归修改/home/kkk目录下的所有子文件和目录的所在组修改为bandit
+        
+## 最佳实践-警察和土匪游戏
+
+有2个组，分别是 police警察组 和 bandit土匪组
+
+警察组：jack、jerry
+土匪组：xh、xq
+
+- 创建组
+    - groupadd police
+    - groupadd jerry
+    
+- 创建用户
+    - useradd -g police jack
+    - useradd -g police jerry
+    - useradd -g bandit xh
+    - useradd -g bandit xq
+    
+- 配置用户的密码，都为123
+    - passwd jack
+    - passwd jerry
+    - passwd xh
+    - passwd xq
+    
+- jack 创建一个文件，自己可以读写，本组人可以读，其它组没人任何权限
+    - vim jack01.txt，内容为hello，wq保存并退出，创建文件
+    - chmod 640 jack01.txt，修改权限
+    - ls -l，查看文件权限为：-rw-r-----
+    
+- jack 修改该文件，让其它组人可以读, 本组人可以读写
+    - chmod o=r,g=rw jack01.txt，修改权限
+    - ls -l，查看文件权限为：-rw-rw-r--
+    
+- xh 投靠 警察，看看是否可以读写，jack目录下的jack01.txt
+    - usermod -g police xh，将xh的组从bandit土匪组，改为police警察组
+    - cd home/jack，发现权限不够，因为jack目录只能jack自己读写
+    - chmod g=rx jack/，开放jack给police组的所有人读写
+    - ls -l，查看目录权限为：drwxr-x---
+    - logout，注销，再重新登录，权限才会生效
+    - cd /home/jack，重新登录后，进入jack的家目录，因为xh已经是polic警察组，所以能进入jack目录
+    - ls -l，查看jack01.txt文件的权限为：-rw-rw-r--，jack同组的成员，可以读写该文件
+    - vim jack01.txt，修改jack01.txt文件，wq保存并退出，证明是可以读写的
