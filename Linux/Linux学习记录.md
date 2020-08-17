@@ -906,3 +906,69 @@ tar 指令 是打包指令，最后打包后的文件是 .tar.gz 的文件
     - abc 文件名
     
 - 除了用字母来表示，还可以用数字表示: r = 4，w = 2，x = 1 因此 rwx = 4 + 2 + 1 = 7
+
+### 修改权限-chmod
+
+通过 chmod 指令，可以修改文件或者目录的权限
+
+- 第一种方式：+ 、-、= 变更权限（u:所有者，g:所有者，o:其他人 a:所有人，u、g、o的总和）
+    - chmod u=rwx,g=rx,o=x 文件或目录名
+    - chomd o+w 文件或目录名，代表给文件或目录的其他人，都加上一个可写权限
+    - chmod a-x 文件或目录名，代表给文件或目录的所有人，都减去一个执行权限
+    
+- 案例
+    - 给 abc 文件 的所有者读写执行的权限，给所在组读执行权限，给其它组读执行权限
+        - touch abc，新建abc文件
+        - ls -l，查看abc文件的权限，-rw-r--r--
+        - chmod u=rwx,g=rx,o=rx，修改abc的权限，文件所有者可读、可写、可执行，所有组和其他组都是可读、可执行，不可写
+        - ls -l，重新查看abc文件的权限，-rwxr-xr-x
+    - 给 abc 文件的所有者除去执行的权限，增加组写的权限
+        - chmod u-x,g+w abc，修改abc文件的权限
+        - ls -l，查看abc文件的权限为：-rw-rwxr-x
+    - 给 abc 文件的所有用户添加读的权限
+        = chmod a+r abc，修改abc文件的权限
+        - ls -l，查看abc的权限为：-rw-rwxr-x
+        
+### 第二种方式：通过数字变更权限
+
+- 规则：r=4 w=2 x=1 ,rwx=4+2+1=7
+
+- 例如：chmod u=rwx,g=rx,o=x 文件目录名，相当于 chmod 751 文件目录名
+
+- 案例
+    - 将 /home/abc.txt 文件的权限修改成 rwxr-xr-x ，使用给数字的方式实现
+        - `rwx`，所有者权限，4 + 2 + 1 = 7
+        - `r-x`，所有组权限，4 + 1 = 5
+        - `r-x`，其他组权限，4 + 1 = 5
+        - 所以最终结果是755，命令则是chmod 755 /home/abc.txt
+        
+## 修改文件所有者-chown
+
+- 指令
+    - chown newowner file，改变文件的所有者
+    - chown newowner:newgroup file，同时改变用户的所有者和所有组
+    - -R参数，如果是目录 则使其下所有子文件或目录递归生效
+
+- 案例
+    - 请将 /home/abc .txt 文件的所有者修改成 tom
+        - touch abc.txt，创建abc.txt文件
+        - chown tom abc.txt，将abc.txt文件的所有者改为tom
+    - 请将 /home/kkk 目录下所有的文件和目录的所有者都修改成 tom
+        - su - root，切换到root用户
+        - cd /home，切换到home目录
+        - mkdir kkk，创建kkk目录到home下
+        - cd kkk/，进入kkk目录
+        - touch a.txt b.txt，在kkk目录下，创建a.txt和b.txt文件
+        - cd ..，切换到上一级目录，就是home目录
+        - chown -R tom kkk/，将kkk目录下，所有的子文件、子目录下所有文件，递归将文件和目录的所有者从root改为tom
+        
+## 修改文件所在组-chgrp
+
+- 指令
+    - chgrp newgroup file 改变文件的所有组
+    
+- 案例
+    - 请将 /home/abc .txt 文件的所在组修改成 bandit (土匪)
+        - chgrp bandit /home/abc.txt，修改/home/abc.txt文件的所在组修改为bandit
+    - 请将 /home/kkk 目录下所有的文件和目录的所在组都修改成 bandit(土匪)
+        - chgrp -R bandit /home/kkk，递归修改/home/kkk目录下的所有子文件和目录的所在组修改为bandit
