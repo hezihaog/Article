@@ -1502,3 +1502,86 @@ top 与 ps 命令很相似。它们都用来显示正在执行的进程。Top �
         - netstat -anp，如果太多，用more分页显示，netstat -anp | more
     - 请查看服务名为 sshd 的服务的信息
         - netstat -anp| grep sshd
+        
+## RPM 和 YUM
+
+### rpm 包的管理
+
+一种用于互联网下载包的打包及安装工具，它包含在某些 Linux 分发版中。它生成具有.RPM 扩展名的文件。RPM 是 RedHat Package Manager（RedHat 软件包管理工具）的缩写，类似 windows 的 setup.exe，这一文件格式名称虽然打上了 RedHat 的标志，但理念是通用的。 Linux 的分发版本都有采用（suse,redhat, centos 等等），可以算是公认的行业标准了。
+
+- rpm 包的简单查询指令
+
+- 指令：
+    - 查询已安装的 rpm 列表 rpm –qa|grep xx 
+
+- 案例
+    - 请查询看一下，当前的 Linux 有没有安装 firefox
+    
+#### rpm 包名基本格式
+
+一个 rpm 包名：firefox-45.0.1-1.el6.centos.x86_64.rpm
+
+- 名称:firefox
+- 版本号：45.0.1-1
+- 适用操作系统: el6.centos.x86_64
+    - 表示 centos6.x 的 64 位系统
+    - 如果是 i686、i386 表示 32 位系统
+    - noarch 表示通用
+    
+#### rpm 包的其它查询指令
+
+- 查询所安装的所有 rpm 软件包
+    - rpm -qa
+    - rpm -qa | more [分页显示]
+    - rpm -qa | grep X [rpm -qa | grep firefox]
+
+- 查询指定软件是否安装（常用）
+    - rpm -q 软件包名
+        - rpm -q firefox
+
+- 查询软件的安装的信息，可以查询软件安装到哪去了（常用）
+    - rpm -qi 软件包名
+        - rpm -q firefox
+
+- 查询软件会安装哪些文件
+    - rpm -ql 软件包名 ：查询软件包中的文件
+        - rpm -ql firefox
+    - rpm -qf 文件全路径名 ：查询文件所属的软件包
+        - rpm -ql firefox
+
+- 想查找某个文件是属于哪个软件的（常用）
+    - rpm -qf 文件全路径名 ：查询文件所属的软件包
+        - rpm -qf /etc/passwd
+        - rpm -qf /root/install.log
+        
+#### 卸载 rpm 包
+
+- 语法
+    - rpm -e RPM 包的名称
+    
+- 案例
+    - 删除 firefox 软件包
+        - rpm -e firefox
+        
+- 细节
+    - 如果其它软件包依赖于您要卸载的软件包，卸载时则会产生错误信息
+        - 如：$ rpm -e foo removing these packages would break dependencies:foo is needed by bar-1.0-1
+    - 如果我们就是要删除 foo 这个 rpm 包，可以增加参数 `--nodeps` ,就可以强制删除，但是一般 不推荐这样做，因为依赖于该软件包的程序可能无法运行
+        - 如：rpm -e --nodeps foo
+        
+#### 安装 rpm 包
+
+- 语法
+    - rpm -ivh RPM 包全路径名称
+    
+- 参数说明
+    - `i`：install 安装
+    - `v`：verbose 提示
+    - `h`：hash 进度条
+    
+- 案例
+    - 安装 firefox 浏览器
+        - 步骤先找到 firefox 的安装 rpm 包，你需要挂载上我们安装 centos 的 iso 文件，然后到/media/下去 找 rpm 找
+        - cp firefox-45.0.1-1.el6.centos.x86_64.rpm /opt/，拷贝firefox安装包到opt目录下
+        - cd /opt/，切换到opt目录
+        - rpm -ivh firefox-45.0.1-1.el6.centos.x86_64.rpm，进行安装
