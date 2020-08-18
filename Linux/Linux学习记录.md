@@ -1257,3 +1257,51 @@ tmpfs                    199M     0  199M    0% /run/user/0
 - 以树状显示目录结构
     - yum install tree，用yum安装tree命令
     - tree，以树状方式打印
+    
+## 网络配置
+
+#### Linux 网络配置
+
+目前我们的网络配置采用的是 NAT。虚拟机软件VMWare会在物理机上生成一个虚拟网卡wmnet8，ip默认是192.168.184.x系列，虚拟机的网络和物理机会构成一个网络。
+所以虚拟机和物理机能够通信。虚拟机需要和外面公网进行通讯，就需要和网关交互。
+
+#### 查看网络 IP 和网关
+
+- 查看虚拟网络编辑器
+    - 点击VMWare，左上角的编辑，选择虚拟网络编辑器。选择vmnet8，窗口底部的子网ip，默认是192.168.184.0，如果更改此值，下次重启系统，则会将ip从设定的开始。
+    
+- 查看网关
+    - 选择wmnet8时，点击NAT设置，可以设置网关ip。
+    
+#### ping 测试主机之间网络连通
+
+- 语法
+    - ping 目的主机 （功能描述：测试当前服务器是否可以连接目的主机）
+    
+- 案例
+    - 测试当前服务器是否可以连接百度
+        - ping www.baidu.com
+        
+#### linux 网络环境配置
+
+- 第一种方法(自动获取)
+
+进入Linux的网络配置页面（centos在顶部栏中选择，系统，首选项，网络连接），选择具体网络，例如eth0，点击编辑，切换到ipv4设置，选择自动（DHCP）。
+
+缺点: linux 启动后会自动获取 IP,缺点是每次自动获取的 ip 地址可能不一样。这个不适用于做服 务器，因为我们的服务器的 ip 需要是固定的。
+
+- 第二种方法(指定固定的 ip)
+
+直接修改配置文件来指定IP,并可以连接到外网（程序员推荐） ，编辑 /etc/sysconfig/network-scripts/ifcfg-eth0
+
+- 要求：将 ip 地址配置的静态的，ip 地址为 192.168.184.130
+    - vim /etc/sysconfig/network-scripts/ifcfg-eth0
+    - 将ONBOOT配置成yes，即ONBOOT=yes，默认为no，意思为启动时自动开启网络
+    - 将BOOTPROTO配置为static，即BOOTPROTO=static，默认为none
+    - IPADDR指定为固定的ip，即IPADDR=192.168.184.130
+    - GATEWAY指定网关的ip，即GATEWAY=192.168.184.2
+    - DNS1指定域名解析器的ip，配置和网关ip一致即可，即DNS1=192.168.184.2
+    
+- 注意：修改后，一定要 重启服务！
+    - service network restart，重启网络服务
+    - 或者 reboot 重启系统
