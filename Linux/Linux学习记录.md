@@ -1,3 +1,7 @@
+# Linux学习记录
+
+本篇是根据[操作系统 Linux 视频教程全集（78P）| 21 小时从入门到精通](https://www.bilibili.com/video/BV1At41137xm?p=1)视频学习，总结的笔记。
+
 # Linux的目录结构
 
 - /bin（重点）
@@ -1604,3 +1608,96 @@ Yum 是一个 Shell 前端软件包管理器。基于 RPM 包管理，能够从�
     - 请使用 yum 的方式来安装 firefox
         - yum list | grep firefox。先查看一下 firefox rpm 在 yum 服务器有没有
         - yum install firefox。从yum中下载，并安装
+        
+## 搭建 JavaEE 环境
+
+如果需要在 Linux 下进行 JavaEE 的开发，我们需要安装如下软件
+
+- mysql
+- jdk
+- eclipse
+- tomcat
+
+### 安装 JDK
+
+- 安装步骤
+    1. 先将软件通过 xftp5 上传到 /opt 下
+    2. 解压缩到 /opt，tar -zxvf jdk-7u79-linux-x64.gz
+    3. 配置环境变量的配置文件 vim /etc/profile
+        - JAVA_HOME=/opt/jdk1.7.0_79
+        - PATH=/opt/jdk1.7.0_79/bin:$PATH
+        - export JAVA_HOME PATH
+    4. logout，注销一下用户，环境变量才能生效
+    5. 只要java好javac命令生效即可
+    
+### 安装 tomcat
+
+- 安装步骤
+    1. 解压缩到/opt，tar zxvf apache-tomcat-7.0.70.tar.gz
+    2. 进入tomcat的bin目录，启动 tomcat ./startup.sh
+        - cd apache-tomcat-7.0.70
+        - cd bin/
+        - ./startup.sh
+    3. 开放端口 8080 ,这样外网才能访问到 tomcat
+        - vim /etc/sysconfig/iptables
+        - 复制一行22端口的，改为8080，即可放行
+    4. 重启防火墙
+        - service iptables restart
+    5. 查看防火墙状态（可以查看开放的端口）
+        - service iptables status
+        
+### Eclipse 的安装
+
+- 安装步骤
+    - 解压缩到/opt，tar zxvf eclipse-jee-mars-2-linux-gtk-x86_64.tar.gz
+    - 启动 eclipse，配置 jre 和 server
+        - 创建一个快捷方式
+        - 进入到 eclipse 解压后的文件夹，然后执行 ./eclipse 即可
+    - 编写 jsp 页面,并测试成功
+    
+### mysql 的安装和配置
+
+- 卸载旧版本
+    - rpm -qa | grep mysql，查询mysql是否安装了
+    - 如果查询到，就删除：rpm -e mysql_libs，如果被依赖了，则强制删除：rpm -e --nodeps mysql_libs
+
+- 安装步骤
+    - 因为我们是用源码包编译安装，所以需要安装 gcc：yum -y install make gcc-c++ cmake bison-devel  ncurses-devel
+    - 解压mysql压缩包，tar xvf mysql-5.6.14.tar.gz
+    - 进入到mysql解压目录，cd mysql-5.6.14
+    - 编译安装：cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/usr/local/mysql/data -DSYSCONFDIR=/etc -DWITH_MYISAM_STORAGE_ENGINE=1 -DWITH_INNOBASE_STORAGE_ENGINE=1 -DWITH_MEMORY_STORAGE_ENGINE=1 -DWITH_READLINE=1 -DMYSQL_UNIX_ADDR=/var/lib/mysql/mysql.sock -DMYSQL_TCP_PORT=3306 -DENABLED_LOCAL_INFILE=1 -DWITH_PARTITION_STORAGE_ENGINE=1 -DEXTRA_CHARSETS=all -DDEFAULT_CHARSET=utf8 -DDEFAULT_COLLATION=utf8_general_ci
+    - make && make install
+    
+- 配置MySQL
+    - 查看是否有mysql用户及用户组
+        - cat /etc/passwd 查看用户列表
+        - cat /etc/group  查看用户组列表
+    - 如果没有，则创建
+        - groupadd mysql
+        - useradd -g mysql mysql
+        - 修改/usr/local/mysql权限，chown -R mysql:mysql /usr/local/mysql
+    - 初始化配置，进入安装路径（在执行下面的指令），执行初始化配置脚本，创建系统自带的数据库和表
+        - 切换到mysql安装目录，cd /usr/local/mysql
+        - scripts/mysql_install_db --basedir=/usr/local/mysql --datadir=/usr/local/mysql/data --user=mysql 
+        
+- 注：在启动MySQL服务时，会按照一定次序搜索my.cnf，先在/etc目录下找，找不到则会搜索"$basedir/my.cnf"，在本例中就是 /usr/local/mysql/my.cnf，这是新版MySQL的配置文件的默认位置！
+
+- 注意：在CentOS 6.8版操作系统的最小安装完成后，在/etc目录下会存在一个my.cnf，需要将此文件更名为其他的名字，如：/etc/my.cnf.bak，否则，该文件会干扰源码安装的MySQL的正确配置，造成无法启动。
+修改名称，防止干扰：mv /etc/my.cnf /etc/my.cnf.bak
+
+- 启动MySQL
+  - 添加服务，拷贝服务脚本到init.d目录，并设置开机启动
+  - cd /usr/local/mysql，切换到mysql安装目录
+  - cp support-files/mysql.server /etc/init.d/mysql，拷贝服务脚本到init.d目录
+  - chkconfig mysql on，配置mysql在每个运行级别都自启动
+  - service mysql start，手动启动MySQL，后续每次开机都会自启动
+  
+- 配置root密码
+    - cd /usr/local/mysql/bin，切换到mysql安装目录
+    - ./mysql -uroot，进入mysql命令行（默认root的密码为空）
+    - SET PASSWORD = PASSWORD('root');
+    
+- 简单使用
+    - 创建一个数据库 DB1
+    - 创建一张表 user
+    - 添加一个用户进表中，如果成功，说明我们的数据库就安装成功了！
