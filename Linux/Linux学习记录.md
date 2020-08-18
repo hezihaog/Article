@@ -1585,3 +1585,22 @@ top 与 ps 命令很相似。它们都用来显示正在执行的进程。Top �
         - cp firefox-45.0.1-1.el6.centos.x86_64.rpm /opt/，拷贝firefox安装包到opt目录下
         - cd /opt/，切换到opt目录
         - rpm -ivh firefox-45.0.1-1.el6.centos.x86_64.rpm，进行安装
+        
+### yum
+
+Yum 是一个 Shell 前端软件包管理器。基于 RPM 包管理，能够从指定的服务器自动下载 RPM 包 并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包。使用 yum 的前提是可以联 网。
+
+#### yum 的基本指令
+
+Yum 是一个 Shell 前端软件包管理器。基于 RPM 包管理，能够从指定的服务器自动下载 RPM 包 并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包。使用 yum 的前提是可以联网。
+
+- yum 的基本指令
+
+- 指令
+    - yum list|grep xx 软件列表。查询 yum 服务器是否有需要安装的软件
+    - yum install xxx 下载安装。安装指定的 yum 包
+    
+- 案例
+    - 请使用 yum 的方式来安装 firefox
+        - yum list | grep firefox。先查看一下 firefox rpm 在 yum 服务器有没有
+        - yum install firefox。从yum中下载，并安装
