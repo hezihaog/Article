@@ -1,6 +1,6 @@
-#### MySQL多表&事务学习笔记
+# MySQL多表&事务学习笔记
 
-#### 笔记大纲
+## 笔记大纲
 
 - 多表查询
 
@@ -8,7 +8,7 @@
 
 - DCL
 
-#### 多表查询
+## 多表查询
 
 - 查询语法
 
@@ -54,110 +54,118 @@ INSERT INTO emp(NAME,gender,salary,join_date,dept_id) VALUES('蜘蛛精','女',4
 	- 有两个集合A,B .取这两个集合的所有组成情况。
 	- 要完成多表查询，需要消除无用的数据
 
-- 多表查询的分类
-	- 内连接查询
-		- 隐式内连接：使用where条件消除无用数据
+### 多表查询的分类
 
-		```
-		-- 查询所有员工信息和对应的部门信息
+#### 内连接查询
 
-		SELECT * FROM emp,dept WHERE emp.`dept_id` = dept.`id`;
-		
-		-- 查询员工表的名称，性别。部门表的名称
-		SELECT emp.name,emp.gender,dept.name FROM emp,dept WHERE emp.`dept_id` = dept.`id`;
-		
-		SELECT 
-			t1.name, -- 员工表的姓名
-			t1.gender,-- 员工表的性别
-			t2.name -- 部门表的名称
-		FROM
-			emp t1,
-			dept t2
-		WHERE 
-			t1.`dept_id` = t2.`id`;
-		```
-		
-		- 显式内连接
-			- 语法： select 字段列表 from 表名1 [inner] join 表名2 on 条件
+- 隐式内连接：使用where条件消除无用数据
 
-		```
-		例：
-		SELECT * FROM emp INNER JOIN dept ON emp.`dept_id` = dept.`id`;
-		SELECT * FROM emp JOIN dept ON emp.`dept_id` = dept.`id`;
-		```
-		
-		- 内连接查询需要确定的
-			- 从哪些表中查询数据
-			- 条件是什么
-			- 查询哪些字段
+```
+-- 查询所有员工信息和对应的部门信息
 
-	- 外连接查询 
-		- 左外连接
-			- 语法：select 字段列表 from 表1 left [outer] join 表2 on 条件；
-			- 意义：查询的是左表所有数据以及其交集部分。
+SELECT * FROM emp,dept WHERE emp.`dept_id` = dept.`id`;
 
-			```
-			-- 查询所有员工信息，如果员工有部门，则查询部门名称，没有部门，则不显示部门名称
-			SELECT 	t1.*,t2.`name` FROM emp t1 LEFT JOIN dept t2 ON t1.`dept_id` = t2.`id`;
-			```
-			
-		- 右外连接
-			- 语法：select 字段列表 from 表1 right [outer] join 表2 on 条件；
-			- 意义：查询的是右表所有数据以及其交集部分。
+-- 查询员工表的名称，性别。部门表的名称
+SELECT emp.name,emp.gender,dept.name FROM emp,dept WHERE emp.`dept_id` = dept.`id`;
 
-			```
-			SELECT * FROM dept t2 RIGHT JOIN emp t1 ON t1.`dept_id` = t2.`id`;
-			```
-			
-		- 子查询
-			- 概念：查询中嵌套查询，称嵌套查询为子查询。
+SELECT 
+    t1.name, -- 员工表的姓名
+    t1.gender,-- 员工表的性别
+    t2.name -- 部门表的名称
+FROM
+    emp t1,
+    dept t2
+WHERE 
+    t1.`dept_id` = t2.`id`;
+```
+    
+- 显式内连接
+    - 语法： select 字段列表 from 表名1 [inner] join 表名2 on 条件
 
-			```
-			-- 查询工资最高的员工信息
-			-- 1 查询最高的工资是多少 9000
-			SELECT MAX(salary) FROM emp;
-			
-			-- 2 查询员工信息，并且工资等于9000的
-			SELECT * FROM emp WHERE emp.`salary` = 9000;
-			
-			-- 一条sql就完成这个操作。子查询
-			SELECT * FROM emp WHERE emp.`salary` = (SELECT MAX(salary) FROM emp);
-			```
-			
-			- 子查询不同情况
-				- 子查询的结果是单行单列的
-					- 子查询可以作为条件，使用运算符去判断。 运算符： > >= < <= =
+```
+例：
+SELECT * FROM emp INNER JOIN dept ON emp.`dept_id` = dept.`id`;
+SELECT * FROM emp JOIN dept ON emp.`dept_id` = dept.`id`;
+```
 
-					```
-					-- 查询员工工资小于平均工资的人
-					SELECT * FROM emp WHERE emp.salary < (SELECT AVG(salary) FROM emp);
-					```
-					
-				- 子查询的结果是多行单列的
-					- 子查询可以作为条件，使用运算符in来判断
+- 内连接查询需要确定的
+    - 从哪些表中查询数据
+    - 条件是什么
+    - 查询哪些字段
 
-					```
-					-- 查询'财务部'和'市场部'所有的员工信息
-					SELECT id FROM dept WHERE NAME = '财务部' OR NAME = '市场部';
-					SELECT * FROM emp WHERE dept_id = 3 OR dept_id = 2;
-					-- 子查询
-					SELECT * FROM emp WHERE dept_id IN (SELECT id FROM dept WHERE NAME = '财务部' OR NAME = '市场部');
-					```
-					
-				- 子查询的结果是多行多列的
-					- 子查询可以作为一张虚拟表参与查询
+#### 外连接查询
 
-					```
-					查询员工入职日期是2011-11-11日之后的员工信息和部门信息
-					-- 子查询
-					SELECT * FROM dept t1 ,(SELECT * FROM emp WHERE emp.`join_date` > '2011-11-11') t2
-					WHERE t1.id = t2.dept_id;
-					
-					-- 其实也可以用使用内连接进行多表联查
-					SELECT * FROM emp t1,dept t2 WHERE t1.`dept_id` = t2.`id` AND t1.`join_date` >  '2011-11-11'
-					```
-					
-#### 多表查询练习
+- 左外连接
+    - 语法：select 字段列表 from 表1 left [outer] join 表2 on 条件；
+    - 意义：查询的是左表所有数据以及其交集部分。
+
+    ```
+    -- 查询所有员工信息，如果员工有部门，则查询部门名称，没有部门，则不显示部门名称
+    SELECT 	t1.*,t2.`name` FROM emp t1 LEFT JOIN dept t2 ON t1.`dept_id` = t2.`id`;
+    ```
+    
+- 右外连接
+    - 语法：select 字段列表 from 表1 right [outer] join 表2 on 条件；
+    - 意义：查询的是右表所有数据以及其交集部分。
+
+    ```
+    SELECT * FROM dept t2 RIGHT JOIN emp t1 ON t1.`dept_id` = t2.`id`;
+    ```
+    
+- 子查询
+
+概念：查询中嵌套查询，称嵌套查询为子查询。
+
+```
+-- 查询工资最高的员工信息
+-- 1 查询最高的工资是多少 9000
+SELECT MAX(salary) FROM emp;
+
+-- 2 查询员工信息，并且工资等于9000的
+SELECT * FROM emp WHERE emp.`salary` = 9000;
+
+-- 一条sql就完成这个操作。子查询
+SELECT * FROM emp WHERE emp.`salary` = (SELECT MAX(salary) FROM emp);
+```
+    
+#### 子查询不同情况
+
+- 子查询的结果是单行单列的
+
+    - 子查询可以作为条件，使用运算符去判断。 运算符： > >= < <= =
+
+    ```
+    -- 查询员工工资小于平均工资的人
+    SELECT * FROM emp WHERE emp.salary < (SELECT AVG(salary) FROM emp);
+    ```
+    
+- 子查询的结果是多行单列的
+
+    - 子查询可以作为条件，使用运算符in来判断
+
+    ```
+    -- 查询'财务部'和'市场部'所有的员工信息
+    SELECT id FROM dept WHERE NAME = '财务部' OR NAME = '市场部';
+    SELECT * FROM emp WHERE dept_id = 3 OR dept_id = 2;
+    -- 子查询
+    SELECT * FROM emp WHERE dept_id IN (SELECT id FROM dept WHERE NAME = '财务部' OR NAME = '市场部');
+    ```
+    
+- 子查询的结果是多行多列的
+
+    - 子查询可以作为一张虚拟表参与查询
+
+    ```
+    查询员工入职日期是2011-11-11日之后的员工信息和部门信息
+    -- 子查询
+    SELECT * FROM dept t1 ,(SELECT * FROM emp WHERE emp.`join_date` > '2011-11-11') t2
+    WHERE t1.id = t2.dept_id;
+    
+    -- 其实也可以用使用内连接进行多表联查
+    SELECT * FROM emp t1,dept t2 WHERE t1.`dept_id` = t2.`id` AND t1.`join_date` >  '2011-11-11'
+    ```
+
+### 多表查询练习
 
 - 数据准备
 
@@ -468,7 +476,7 @@ ROLLBACK;
 	- 数据库设置隔离级别
 		- set global transaction isolation level  级别字符串; 
 
-- 演示 
+- 演示
 
 ```
 set global transaction isolation level read uncommitted;
@@ -478,7 +486,7 @@ update account set balance = balance - 500 where id = 1;
 update account set balance = balance + 500 where id = 2;
 ```
 
-#### DCL
+### DCL
 
 - SQL分类：
 	1. DDL：操作数据库和表
@@ -489,68 +497,71 @@ update account set balance = balance + 500 where id = 2;
 - DBA：数据库管理员
 
 - DCL：管理用户，授权
-	- 管理用户
-		- 添加用户
-			- 语法：CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
-		- 删除用户
-			- 语法：DROP USER '用户名'@'主机名';
-		- 修改用户密码
 
-		```
-		UPDATE USER SET PASSWORD = PASSWORD('新密码') WHERE USER = '用户名';
-		UPDATE USER SET PASSWORD = PASSWORD('abc') WHERE USER = 'lisi';
-		
-		SET PASSWORD FOR '用户名'@'主机名' = PASSWORD('新密码');
-		SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123');
-		```
-		
-		- mysql中忘记了root用户的密码？
+#### 管理用户
 
-		```
-		1. cmd -- > net stop mysql 停止mysql服务
-		* 需要管理员运行该cmd
+- 添加用户
+    - 语法：CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+- 删除用户
+    - 语法：DROP USER '用户名'@'主机名';
+- 修改用户密码
 
-		2. 使用无验证方式启动mysql服务： mysqld --skip-grant-tables
-		3. 打开新的cmd窗口,直接输入mysql命令，敲回车。就可以登录成功
-		4. use mysql;
-		5. update user set password = password('你的新密码') where user = 'root';
-		6. 关闭两个窗口
-		7. 打开任务管理器，手动结束mysqld.exe 的进程
-		8. 启动mysql服务
-		9. 使用新密码登录。
-		```
-		
-		- 查询用户
+```
+UPDATE USER SET PASSWORD = PASSWORD('新密码') WHERE USER = '用户名';
+UPDATE USER SET PASSWORD = PASSWORD('abc') WHERE USER = 'lisi';
 
-		```
-		-- 1. 切换到mysql数据库
-		USE myql;
-		-- 2. 查询user表
-		SELECT * FROM USER;
-		
-		* 通配符： % 表示可以在任意主机使用用户登录数据库
-		```
-		
-	- 权限管理
-		- 查询权限
+SET PASSWORD FOR '用户名'@'主机名' = PASSWORD('新密码');
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123');
+```
 
-		```
-		SHOW GRANTS FOR '用户名'@'主机名';
-		SHOW GRANTS FOR 'lisi'@'%';
-		```
-		
-		- 授予权限
+- mysql中忘记了root用户的密码？
 
-		```
-		grant 权限列表 on 数据库名.表名 to '用户名'@'主机名';
-		-- 给张三用户授予所有权限，在任意数据库任意表上
-		
-		GRANT ALL ON *.* TO 'zhangsan'@'localhost';
-		```
-		
-		- 撤销权限
+```
+1. cmd -- > net stop mysql 停止mysql服务
+* 需要管理员运行该cmd
 
-		```
-		revoke 权限列表 on 数据库名.表名 from '用户名'@'主机名';
-		REVOKE UPDATE ON db3.`account` FROM 'lisi'@'%';
-		```
+2. 使用无验证方式启动mysql服务： mysqld --skip-grant-tables
+3. 打开新的cmd窗口,直接输入mysql命令，敲回车。就可以登录成功
+4. use mysql;
+5. update user set password = password('你的新密码') where user = 'root';
+6. 关闭两个窗口
+7. 打开任务管理器，手动结束mysqld.exe 的进程
+8. 启动mysql服务
+9. 使用新密码登录。
+```
+
+- 查询用户
+
+```
+-- 1. 切换到mysql数据库
+USE myql;
+-- 2. 查询user表
+SELECT * FROM USER;
+
+* 通配符： % 表示可以在任意主机使用用户登录数据库
+```
+    
+#### 权限管理
+
+- 查询权限
+
+```
+SHOW GRANTS FOR '用户名'@'主机名';
+SHOW GRANTS FOR 'lisi'@'%';
+```
+
+- 授予权限
+
+```
+grant 权限列表 on 数据库名.表名 to '用户名'@'主机名';
+-- 给张三用户授予所有权限，在任意数据库任意表上
+
+GRANT ALL ON *.* TO 'zhangsan'@'localhost';
+```
+
+- 撤销权限
+
+```
+revoke 权限列表 on 数据库名.表名 from '用户名'@'主机名';
+REVOKE UPDATE ON db3.`account` FROM 'lisi'@'%';
+```
