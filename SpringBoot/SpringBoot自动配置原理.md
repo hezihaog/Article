@@ -14,11 +14,13 @@ SpringBoot之所以可以这样做，是因为它的设计策略，开箱即用�
 
 下面我们看下SpringBoot帮我们做了什么吧！
 
-## 开箱即用原理
+## 自动装配
 
 要使用SpringBoot，我们需要指定parent父工程
 
-### pom指定parent父工程
+### 基础配置
+
+pom文件指定parent父工程
 
 ```
 <parent>
@@ -112,7 +114,7 @@ SpringBoot之所以可以这样做，是因为它的设计策略，开箱即用�
 <build>
 ```
 
-### 启动器
+### 启动器 starter
 
 SpringBoot将每种使用场景所需要的依赖和依赖，封装成一个启动器starter，我们需要引入某种领域的功能时，直接依赖对应的starer即可。
 
@@ -187,7 +189,7 @@ SpringBoot将每种使用场景所需要的依赖和依赖，封装成一个启�
 </dependencies>
 ```
 
-### 启动类
+### 启动类 SpringBootApplication
 
 SpringBoot要求我们提供一个启动类，并且类头加上 @SpringBootApplication注解，该注解就是SpringBoot启动的核心。
 
