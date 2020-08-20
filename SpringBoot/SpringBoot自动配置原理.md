@@ -654,6 +654,8 @@ private static class DeferredImportSelectorHolder {
 
 ## 参考资料
 
+[SpringBoot：认认真真梳理一遍自动装配原理](https://zhuanlan.zhihu.com/p/95217578)
+
 [Spring Boot面试杀手锏 — 自动配置原理](https://blog.csdn.net/u014745069/article/details/83820511)
 
 [深入理解SpringBoot之自动装配](https://www.cnblogs.com/niechen/p/9027804.html)
