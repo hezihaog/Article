@@ -213,11 +213,11 @@ protected void initStrategies(ApplicationContext context) {
 
 最后的子类，作为前端控制器，初始化各种组件，比如请求映射、视图解析、异常处理、请求处理等。
 
-## 组件分析
+## 组件初始化流程
 
-下面开始分发流程分析。
+下面开始 `组件初始化流程` 分析。
 
-### HandlerMapping 分析
+### HandlerMapping 处理器映射
 
 初始化Controller的Url映射关系。
 
@@ -286,7 +286,7 @@ org.springframework.web.servlet.HandlerMapping=org.springframework.web.servlet.h
 org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 ```
 
-### HandlerAdapter 初始化
+### HandlerAdapter 处理器适配器
 
 `HandlerAdapter` 的初始化逻辑和上面的 `HandlerMapping` 基本一样。从容器中搜寻所有 `HandlerAdapter` 的实例。
 如果找不到，则从配置文件中获取`默认` 的 `HandlerAdapter`。
@@ -336,7 +336,7 @@ private void initHandlerAdapters(ApplicationContext context) {
 }
 ```
 
-### 异常处理器 初始化
+### HandlerExceptionResolver 异常处理器
 
 和上面的一样，从容器中搜寻所有的异常处理器的实例，也有一个开关去搜索指定名称的异常处理器。
 
@@ -386,7 +386,7 @@ private void initHandlerExceptionResolvers(ApplicationContext context) {
 }
 ```
 
-### 初始化 ViewResolver 视图解析器
+### ViewResolver 视图解析器
 
 视图解析器和上面的解析器逻辑一样，先有开关决定是搜寻容器中所有的，还是搜寻指定名称的。
 
@@ -577,9 +577,7 @@ protected final void processRequest(HttpServletRequest request, HttpServletRespo
 }
 ```
 
-### DispatcherServlet
-
-- doService()
+### DispatcherServlet doService()
 
 `doService()` 方法中，主要的组件分发处理逻辑在 `doDispatch()` 方法中。
 
@@ -1205,3 +1203,20 @@ void applyAfterConcurrentHandlingStarted(HttpServletRequest request, HttpServlet
     }
 }
 ```
+
+## 总结
+
+### 复杂版
+
+- 初始化时
+    - DispatchServlet 初始化，调用 onRefresh 被调用调用，初始化 处理器映射HandlerMapping 、 HandlerAdapter适配器、 异常处理器、 视图解析器 等一系列组件。
+
+- 请求到达时
+    - DispatchServlet 的 doService() 被调用，根据请求的Url查找对应的处理器，包含我们的Controller和拦截器。
+    - 根据处理器，找到对应的HandlerAdapter适配器，因为处理器的形式有很多，例如Servlet作为处理器、实现Controller接口，使用@Controller注解等，返回值都不一，就要使用适配器将结果都适配为ModelAndView。
+    - 执行适配器的处理方法前，先回调拦截器的前处理方法，这里可以进行拦截，如果拦截了，就不继续流程了。如果不拦截，则继续走，调用适配器的处理方法，在处理方法中，会调用处理器进行处理，就调用到我们的Controller。执行完后，再回调拦截器的后处理回调方法。
+    - 获取到 ModelAndView 后，交给视图解析器ViewResolver，进行解析视图名称为具体视图实例后，再进行视图和数据的渲染返回给客户端，并回调拦截器视图渲染完后的回调方法。
+    
+### 简单版
+
+请求到来时，从DispatchServlet前端控制器开始，通过url查找处理器，查找处理器对应的适配器，执行适配器的处理方法，返回ModelAndView。视图处理器解析ModelAndView，生成对应的视图对象，渲染视图和数据，并返回给客户端。
