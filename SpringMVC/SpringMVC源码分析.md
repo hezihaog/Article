@@ -41,6 +41,8 @@ SpringMVC在Java后端中，是一个很重要也很常用的框架，本篇来�
 我们知道，Servlet初始化时，Servlet的 `init()`方法会被调用。我们进入 `DispatcherServlet`中，发现并没有该方法，那么肯定在它集成的父类上。
 `DispatcherServlet` 继承于 `FrameworkServlet`，结果还是没找到，继续找它的父类 `HttpServletBean`。
 
+### HttpServletBean
+
 终于找到了，`HttpServletBean` 继承于 `HttpServlet`，我们来看下这个 `init()` 方法。
 
 ```
@@ -68,7 +70,7 @@ public final void init() throws ServletException {
 }
 ```
 
-- 子类FrameworkServlet
+### FrameworkServlet
 
 `initServletBean()`方法，就是一个初始化。
 方法内主要是调用了 `initWebApplicationContext()` 初始化WebApplicationContext，
@@ -160,7 +162,7 @@ public interface WebApplicationContext extends ApplicationContext {
 
 接来下，我们看子类 `DispatcherServlet` 复写的 `onRefresh()`方法。
 
-- DispatcherServlet
+### DispatcherServlet
 
 `FrameworkServlet`类的职责是将 `Spring` 和 `Servler` 进行一个关联。而对于 `DispatcherServlet` 来说，它初始化方法是 `onRefresh()`。
 
@@ -196,7 +198,7 @@ protected void initStrategies(ApplicationContext context) {
 }
 ```
 
-## 总结3个Servlet类的作用和职责
+### 总结3个Servlet类的作用和职责
 
 - HttpServletBean
 
@@ -210,6 +212,10 @@ protected void initStrategies(ApplicationContext context) {
 - DispatcherServlet
 
 最后的子类，作为前端控制器，初始化各种组件，比如请求映射、视图解析、异常处理、请求处理等。
+
+## 组件分析
+
+下面开始分发流程分析。
 
 ### HandlerMapping 分析
 
@@ -429,7 +435,7 @@ private void initViewResolvers(ApplicationContext context) {
 }
 ```
 
-### 请求流程分析
+## 请求流程分析
 
 当请求进入时，我们都知道会调用Servlet的 `service()` 方法，我们试着去 `DispatchServlet` 中搜索，发现没有。我们去到父类 `FrameworkServlet` 找到了。
 
@@ -571,7 +577,7 @@ protected final void processRequest(HttpServletRequest request, HttpServletRespo
 }
 ```
 
-#### DispatcherServlet
+### DispatcherServlet
 
 - doService()
 
@@ -731,7 +737,7 @@ protected void doDispatch(HttpServletRequest request, HttpServletResponse respon
 
 下面就对上面的每个步骤，进行分析。
 
-#### getHandler() 搜寻本次请求的处理器对象
+### getHandler() 搜寻本次请求的处理器对象
 
 责任链模式，遍历handlerMappings集合，找到处理器和拦截器，会调用到 `AbstractHandlerMapping`的 `getHandler()`方法。
 最后将处理器和拦截器都封装到 `HandlerExecutionChain` 这个处理器执行链对象中。
@@ -826,7 +832,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 接下来分析适配组件，`getHandlerAdapter()`
 
-#### getHandlerAdapter() 获取处理器对应的适配器
+### getHandlerAdapter() 获取处理器对应的适配器
 
 责任链模式，遍历调用适配器集合，调用supports()方法，询问每个适配器，是否支持当前的处理器。
 如果返回true，则代表找到了，停止遍历，返回适配器。
@@ -937,7 +943,7 @@ public class SimpleControllerHandlerAdapter implements HandlerAdapter {
 
 根据流程，获取到对应的适配器后，就可以通知拦截器了
 
-#### 拦截器前置通知
+### 拦截器前置通知
 
 遍历拦截器链，调用它的 `preHandle()` 方法，通知拦截器进行请求处理前的拦截和附加处理。
 如果有一个拦截器返回false，代表拦截，则处理流程被中断，就是拦截了。
@@ -962,7 +968,7 @@ boolean applyPreHandle(HttpServletRequest request, HttpServletResponse response)
 随后，就调用适配器的 `handle()` 方法，进行适配，返回ModelAndView。
 处理完后，也代表请求进过Controller处理完毕，接着进行拦截器通知。
 
-#### 拦截器后置通知
+### 拦截器后置通知
 
 和前置通知不同，后置通知没有拦截功能，只能是增强。逻辑还是遍历拦截器链，调用拦截器的 `postHandle()` 方法。
 
@@ -981,7 +987,7 @@ void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @
 
 视图、数据都获取到了，就可以进行视图生成以及数据渲染了。
 
-#### processDispatchResult() 视图渲染
+### 结果处理
 
 因为 `doDispatch()` 的处理流程，SpringMVC都帮我们try-catch了，所以能捕获到异常，并传入该方法。
 
@@ -1049,7 +1055,7 @@ void triggerAfterCompletion(HttpServletRequest request, HttpServletResponse resp
 }
 ```
 
-- 视图解析和渲染
+### 视图解析和渲染
 
 先判断是否需要视图解析器进行视图解析，最后调用解析出来的视图的 `render()` 方法进行渲染操作。
 
@@ -1098,7 +1104,7 @@ protected void render(ModelAndView mv, HttpServletRequest request, HttpServletRe
 }
 ```
 
-- 进行视图解析
+#### 视图解析
 
 遍历视图解析器集合，不同的视图需要不同的解析器进行处理。
 
@@ -1142,7 +1148,7 @@ public interface ViewResolver {
 }
 ```
 
-- 进行视图渲染
+#### 视图渲染
 
 视图解析完成，生成View视图对象，而View也是一个接口，它有以下实现类：
 
