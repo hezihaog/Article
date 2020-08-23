@@ -2,7 +2,7 @@
 
 ## let
 
-- let特性：块级作用域
+### 块级作用域
 
 ```
 var声明的变量会越域
@@ -15,7 +15,7 @@ console.log(a);//1
 console.log(b);//ReferenceError：b is not defined
 ```
 
-- let特性：不能重复声明
+### 不能重复声明
 
 ```
 //var可以声明多次
@@ -29,7 +29,7 @@ console.log(m);//2
 console.log(n);//Uncaught SyntaxError: Identifier 'n' has already been declared
 ```
 
-- let特性：不会变量提升
+###不会变量提升
 
 ```
 //var会变量提升
@@ -51,7 +51,7 @@ a = 3;//修改常量，报错：Uncaught TypeError: Assignment to constant varia
 
 ## 解构表达式
 
-- 数组解构
+### 数组解构
 
 ```
 let arr = [1,2,3];
@@ -67,7 +67,7 @@ console.log(b);
 console.log(c);
 ```
 
-- 对象解构
+### 对象解构
 
 ```
 const person = {
@@ -91,7 +91,7 @@ console.log(n, a, l);
 
 ## 字符串拓展
 
--  字符串新增的4个方法
+###  字符串新增的4个方法
 
 ```
 let str = "hello.vue";
@@ -105,7 +105,7 @@ console.log(str.includes('e'));//true
 console.log(str.includes('hello'));//true
 ```
 
-- 字符串模板
+### 字符串模板
 
 ```
 //2个反引号包裹字符串，保留换行格式
@@ -132,7 +132,7 @@ console.log(info);
 
 ## 函数优化
 
-- 函数默认值
+### 函数默认值
 
 ```
 //在ES6之前，我们无法给一个函数的参数设置默认值，只能通过变通写法
@@ -151,7 +151,7 @@ function add2(a, b = 1) {
 console.log(add2(20));
 ```
 
-- 不定参数
+### 不定参数
 
 ```
 function fun(...values) {
@@ -161,7 +161,7 @@ fun(1, 2);//2
 fun(1, 2, 3, 4);//4
 ```
 
-- 箭头函数
+### 箭头函数
 
 ```
 //以前声明一个方法
@@ -207,7 +207,7 @@ hello2(person)
 
 ## 对象优化
 
-- Object新增了4个方法
+### Object新增了4个方法
 
 ```
 const person = {
@@ -231,7 +231,7 @@ Object.assign(target, source1, source2);
 console.log(target);//{a: 1, b: 2, c: 3}
 ```
 
-- 声明对象的简写
+### 声明对象的简写
 
 ```
 const age = 23;
@@ -262,7 +262,7 @@ person3.eat2("苹果");
 person3.eat3("橘子");
 ```
 
-- 对象拓展运算符
+### 对象拓展运算符
 
 ```
 //1）拷贝对象（深拷贝）
@@ -351,7 +351,7 @@ console.log(result);
 }
 ```
 
-- 建立html，ajax请求数据，3个接口要串联起来调用，会形成回调地狱
+### ajax嵌套请求，回调地狱
 
 ```
 <!DOCTYPE html>
@@ -400,7 +400,7 @@ console.log(result);
 </html>
 ```
 
-- 使用promise优化
+### 使用promise优化
 
 ```
 <!DOCTYPE html>
