@@ -87,7 +87,7 @@ pom文件指定parent父工程
 <dependencyManagement>
 ```
 
-我们的父工程 `spring-boot-starter-parent`，还帮我们指定了配置文件的格式
+我们的父工程`spring-boot-starter-parent`，还帮我们指定了配置文件的格式
 
 ```
 <build>
@@ -126,7 +126,7 @@ SpringBoot将每种使用场景所需要的依赖和依赖，封装成一个启�
 </dependency>
 ```
 
-例如我们常用的Web开发，需要依赖SpringMVC等，SpringBoot提供了 `spring-boot-starter-web` 启动器
+例如我们常用的Web开发，需要依赖SpringMVC等，SpringBoot提供了`spring-boot-starter-web`启动器
 
 ```
 <dependency>
@@ -203,7 +203,7 @@ public class SpringbootEsApplication {
 }
 ```
 
-我们点进去 `@SpringBootApplication`注解
+我们点进去`@SpringBootApplication`注解
 
 ```
 @Target(ElementType.TYPE)
@@ -220,13 +220,13 @@ public @interface SpringBootApplication {
 }
 ```
 
-我们会发现SpringBootApplication是一个复合注解，当中最重要的是 `@SpringBootConfiguration` 和 `@EnableAutoConfiguration`，这2个注解。
+我们会发现SpringBootApplication是一个复合注解，当中最重要的是`@SpringBootConfiguration`和`@EnableAutoConfiguration`，这2个注解。
 @ComponentScan注解是包扫描，因为没有配置扫描包，默认是扫描标识该注解的类的包，以及它以下的子包，所以启动类一般在根包下。
 
 - @SpringBootConfiguration注解
 
-我们发现 `@SpringBootConfiguration`注解 ，最主要是加上了 `@Configuration`注解。
-我们知道 `@Configuration`注解 就代表了一个JavaConfig方式的Spring的容器，所以我们启动器类也相当于一个容器。
+我们发现`@SpringBootConfiguration`注解 ，最主要是加上了`@Configuration`注解。
+我们知道`@Configuration`注解 就代表了一个JavaConfig方式的Spring的容器，所以我们启动器类也相当于一个容器。
 
 `SpringBootConfiguration`注解没什么可看了，我们看下一个注解
 
@@ -247,7 +247,7 @@ public @interface SpringBootConfiguration {
 
 - @EnableAutoConfiguration注解
 
-`@EnableAutoConfiguration`注解中，主要注解是 `@Import(AutoConfigurationImportSelector.class)`。
+`@EnableAutoConfiguration`注解中，主要注解是`@Import(AutoConfigurationImportSelector.class)`。
 @Import注解，帮我们导入了`AutoConfigurationImportSelector`这个类
 
 ```
@@ -268,7 +268,7 @@ String[] excludeName() default {};
 
 - AutoConfigurationImportSelector类
 
-AutoConfigurationImportSelector类实现了`DeferredImportSelector`接口，该接口继承 `ImportSelector`接口 ，会要求复写`selectImports()`方法。
+AutoConfigurationImportSelector类实现了`DeferredImportSelector`接口，该接口继承`ImportSelector`接口 ，会要求复写`selectImports()`方法。
 
 `ImportSelector`接口，主要是为了导入`@Configuration`配置的，而`DeferredImportSelector`是延期导入，当所有的`@Configuration`都处理完成后，再调用`DeferredImportSelector`进行处理。
 
@@ -404,7 +404,7 @@ public final class SpringFactoriesLoader {
 
 刚才我们跟踪的`loadFactoryNames()`方法，传入的EnableAutoConfiguration的Class，就是要从`spring.factories`配置文件中找到它对应的那一组Value。
 
-我们以 `ServletWebServerFactoryAutoConfiguration` 为例，点进去看一下
+我们以`ServletWebServerFactoryAutoConfiguration`为例，点进去看一下
 
 ```
 # 省略其他配置...
@@ -428,9 +428,9 @@ org.springframework.boot.autoconfigure.webservices.client.WebServiceTemplateAuto
 
 - ServletWebServerFactoryAutoConfiguration类
 
-我们看到该类的类头上，有`@EnableConfigurationProperties`注解，该属性表示加载配置属性，这里指定了一个 `ServerProperties` 类。
+我们看到该类的类头上，有`@EnableConfigurationProperties`注解，该属性表示加载配置属性，这里指定了一个`ServerProperties`类。
 
-我们点进去 `ServerProperties` 类看一下
+我们点进去`ServerProperties`类看一下
 
 ```
 @Configuration(proxyBeanMethods = false)
@@ -449,9 +449,9 @@ public class ServletWebServerFactoryAutoConfiguration {
 
 - ServerProperties类
 
-这个是一个和配置信息相对应的类，它类头上配置了 `@ConfigurationProperties` 注解，它可以将配置文件中的配置项的内容，映射到我们的类的变量上。
+这个是一个和配置信息相对应的类，它类头上配置了`@ConfigurationProperties`注解，它可以将配置文件中的配置项的内容，映射到我们的类的变量上。
 
-注解上，配置的prefix属性，就代表了server.xxx系列配置，例如我们配置端口：server.port，该注解将我们的配置映射到 `ServerProperties` 上。
+注解上，配置的prefix属性，就代表了server.xxx系列配置，例如我们配置端口：server.port，该注解将我们的配置映射到`ServerProperties`上。
 
 ```
 @ConfigurationProperties(prefix = "server", ignoreUnknownFields = true)
@@ -476,13 +476,13 @@ SpringBoot启动类的main方法启动时，会找@EnableAutoConfiguration注解
 
 如果只是想面试了解一下，到这里就可以了，而如果更想深入，就要继续跟一下。
 
-如果要继续跟，就还有一个疑点，自动装配是什么时候开始的呢，其实就是 `AutoConfigurationImportSelector`类上的 `selectImports()`方法，还不知道它什么会被调用。
+如果要继续跟，就还有一个疑点，自动装配是什么时候开始的呢，其实就是`AutoConfigurationImportSelector`类上的`selectImports()`方法，还不知道它什么会被调用。
 
 ### 何时开始进行自动装配
 
-我们回归到Spring，Spring应用启动，会在 `AbstractApplicationContext` 类中，调用 `refresh()` 方法。
+我们回归到Spring，Spring应用启动，会在`AbstractApplicationContext`类中，调用`refresh()`方法。
 
-`refresh()`方法中，调用了 `invokeBeanFactoryPostProcessors()` 方法，该方法是用来处理 `BeanFactoryPostProcessor`接口的，而 `BeanFactoryPostProcessor` 的有一个子接口 `BeanDefinitionRegistryPostProcessor`。
+`refresh()`方法中，调用了`invokeBeanFactoryPostProcessors()`方法，该方法是用来处理`BeanFactoryPostProcessor`接口的，而`BeanFactoryPostProcessor`的有一个子接口`BeanDefinitionRegistryPostProcessor`。
 
 ```
 public abstract class AbstractApplicationContext extends DefaultResourceLoader
@@ -505,11 +505,11 @@ public interface BeanDefinitionRegistryPostProcessor extends BeanFactoryPostProc
 
 - ConfigurationClassPostProcessor类
 
-子接口BeanDefinitionRegistryPostProcessor，有一个实现类 `ConfigurationClassPostProcessor`，它是专门处理 `@Configuration` 注解的。
+子接口BeanDefinitionRegistryPostProcessor，有一个实现类`ConfigurationClassPostProcessor`，它是专门处理`@Configuration`注解的。
 
-`processConfigBeanDefinitions()`方法中，就是处理 `@Configuration` 注解的类。主要是使用`ConfigurationClassParser` 类的 `parse()` 方法。
+`processConfigBeanDefinitions()`方法中，就是处理`@Configuration`注解的类。主要是使用`ConfigurationClassParser`类的`parse()`方法。
 
-我们进去 `parse()` 方法，看一下
+我们进去`parse()`方法，看一下
 
 ```
 public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPostProcessor,
@@ -569,9 +569,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 
 - ConfigurationClassParser类的parse()方法
 
-首先类中有一个内部类 `DeferredImportSelectorHandler`，构造方法 `ConfigurationClassParser` 实例时，就创建该内部类的实例。
+首先类中有一个内部类`DeferredImportSelectorHandler`，构造方法`ConfigurationClassParser`实例时，就创建该内部类的实例。
 
-在 `parse()` 方法调用时，最后一句调用了 `processDeferredImportSelectors()`方法。
+在`parse()`方法调用时，最后一句调用了`processDeferredImportSelectors()`方法。
 
 ```
 class ConfigurationClassParser {
@@ -606,9 +606,9 @@ class ConfigurationClassParser {
 
 - processDeferredImportSelectors()方法
 
-重点在 `String[] imports = deferredImport.getImportSelector().selectImports(configClass.getMetadata());`。
+重点在`String[] imports = deferredImport.getImportSelector().selectImports(configClass.getMetadata());`。
 
-调用的是 `DeferredImportSelectorHolder`类，它保存了 `DeferredImportSelector` 的引用，在这个for循环中，调用了 `DeferredImportSelector` 的 `selectImports()`方法，从而调用到了我们之前分析的 `AutoConfigurationImportSelector` 类中的 `selectImports()`方法了。
+调用的是`DeferredImportSelectorHolder`类，它保存了`DeferredImportSelector`的引用，在这个for循环中，调用了`DeferredImportSelector`的`selectImports()`方法，从而调用到了我们之前分析的`AutoConfigurationImportSelector`类中的`selectImports()`方法了。
 
 ```
 private void processDeferredImportSelectors() {
