@@ -91,6 +91,12 @@ make && make install
 yum -y install gcc gcc-c++ autoconf automake make
 ```
 
+可能还缺少pcre-devel、zlib-devel、openssl-devel，再进行安装即可
+
+```
+yum install pcre-devel zlib zlib-devel openssl openssl-devel
+```
+
 如果你其实已经安装了gcc，但又依旧出现这个错误，可以尝试卸载再重新安装
 
 ```
