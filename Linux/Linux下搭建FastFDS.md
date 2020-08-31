@@ -21,6 +21,10 @@
     - 访问文件
 - FastDFS配置Nginx模块
     - 安装配置Nginx模块
+- Java项目操作FastDFS
+    - 上传文件
+    - 下载文件
+    - 删除文件
     
 ## 安装FastDFS环境
 
@@ -688,3 +692,235 @@ ll
 
 1. `mod_fastdfs.conf`文件，没有放到`/etc/fdfs`目录中去！
 2. 如果放了，但`mod_fastdfs.conf`文件里面有错误，一般错误是`base_path`，基础路径这个目录没有创建，必须自己mkdir手动创建才行！
+
+## Java项目操作FastDFS
+
+FastDFS的Java客户端，没有上传Maven中央仓库，所以只能去它的[Github](https://github.com/happyfish100/fastdfs-client-java)中下载，并打包到本地的仓库中来使用。
+
+[下载地址](https://github.com/happyfish100/fastdfs-client-java/releases)，我这里选择`V1.27`版本。
+
+### 打包到本地仓库
+
+下载完成后，解压，进入到解压目录，执行清理和打包命令（需要先安装Maven环境，如果没有，可以直接在Idea中打开，再打包）
+
+```
+mvn clean install
+```
+
+### Java搭建工程
+
+创建一个普通的Maven管理的Java项目，加入以下依赖
+
+```
+<dependencies>
+    <!-- 引入fast-dfs java客户端 -->
+    <!-- 这个依赖没有在Maven中央库中，所以需要自己对源码进行编译，打包到自己本地的仓库中 -->
+    <dependency>
+        <groupId>org.csource</groupId>
+        <artifactId>fastdfs-client-java</artifactId>
+        <version>1.27-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+```
+
+`resources`目录下，创建一个`fastdfs.conf`文件，作为FastDFS的配置文件
+
+并配置你的tracker server的地址
+
+```
+//配置tracker server的地址
+tracker_server=192.168.211.131:22122
+```
+
+新建FastDFS工具类，封装一些文件的上传、下载和删除功能
+
+```
+public class FastDFSUtil {
+    /**
+     * 文件上传
+     */
+    public static String[] upload(String localFileName) {
+        TrackerServer trackerServer = null;
+        StorageServer storageServer = null;
+        try {
+            //读取配置文件，用于将所有tracker server的地址读取到内存中
+            ClientGlobal.init("fastdfs.conf");
+            TrackerClient trackerClient = new TrackerClient();
+            trackerServer = trackerClient.getConnection();
+            storageServer = trackerClient.getStoreStorage(trackerServer);
+            //定义Storage的客户端对象，需要使用这个对象来完成具体的文件上传、下载和删除操作
+            StorageClient storageClient = new StorageClient(trackerServer, storageServer);
+            //上传，参数一：需要上传的文件的绝对路径，参数二：需要上传的文件的扩展名，参数三：文件的属性文件，通常不上传
+            //返回一个String数组，这个数据对我们非常有用，必须妥善保管，建议保存到数据库
+            //返回结果数组：第一个元素为文件所在的组名，第二个元素为文件所在的远程路径名称
+            return storageClient.upload_file(localFileName, "png", null);
+        } catch (IOException | MyException e) {
+            e.printStackTrace();
+        } finally {
+            //关闭资源
+            try {
+                if (storageServer != null) {
+                    storageServer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (trackerServer != null) {
+                    trackerServer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 下载
+     *
+     * @param groupName      组名
+     * @param remoteFileName 远程文件名称
+     * @param saveFileName   保存的文件名称
+     * @return 返回是否下载成功
+     */
+    public static boolean download(String groupName, String remoteFileName, String saveFileName) {
+        TrackerServer trackerServer = null;
+        StorageServer storageServer = null;
+        try {
+            //读取配置文件，用于将所有tracker server的地址读取到内存中
+            ClientGlobal.init("fastdfs.conf");
+            TrackerClient trackerClient = new TrackerClient();
+            trackerServer = trackerClient.getConnection();
+            storageServer = trackerClient.getStoreStorage(trackerServer);
+            //定义Storage的客户端对象，需要使用这个对象来完成具体的文件上传、下载和删除操作
+            StorageClient storageClient = new StorageClient(trackerServer, storageServer);
+            //文件下载，参数一：文件的组名，参数二：文件的远程文件名，参数三：保存到本地文件的名称
+            //返回0，则为文件下载成功，其他值表示下载失败
+            int code = storageClient.download_file(groupName, remoteFileName, saveFileName);
+            return code == 0;
+        } catch (IOException | MyException e) {
+            e.printStackTrace();
+        } finally {
+            //关闭资源
+            try {
+                if (storageServer != null) {
+                    storageServer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (trackerServer != null) {
+                    trackerServer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 文件删除
+     *
+     * @param groupName      组名
+     * @param remoteFileName 远程文件名称
+     */
+    public static boolean delete(String groupName, String remoteFileName) {
+        TrackerServer trackerServer = null;
+        StorageServer storageServer = null;
+        try {
+            //读取配置文件，用于将所有tracker server的地址读取到内存中
+            ClientGlobal.init("fastdfs.conf");
+            TrackerClient trackerClient = new TrackerClient();
+            trackerServer = trackerClient.getConnection();
+            storageServer = trackerClient.getStoreStorage(trackerServer);
+            //定义Storage的客户端对象，需要使用这个对象来完成具体的文件上传、下载和删除操作
+            StorageClient storageClient = new StorageClient(trackerServer, storageServer);
+            //文件删除，参数一：需要删除的文件组名，参数二：文件的远程名称，返回int结果，为0则成功，其他则为失败
+            int code = storageClient.delete_file(groupName, remoteFileName);
+            return code == 0;
+        } catch (IOException | MyException e) {
+            e.printStackTrace();
+        } finally {
+            //关闭资源
+            try {
+                if (storageServer != null) {
+                    storageServer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (trackerServer != null) {
+                    trackerServer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+}
+```
+
+提供一个能执行`main()`方法的类，调用工具类方法测试即可
+
+```
+public class Main {
+    public static void main(String[] args) {
+        //upload();
+        //download();
+        delete();
+    }
+
+    /**
+     * 上传文件
+     */
+    private static void upload() {
+        String[] results = FastDFSUtil.upload("/Users/wally/Desktop/Code/Java/fastdfs-java/src/main/resources/FastDFS命名解析.png");
+        if (results != null && results.length == 2) {
+            String group = results[0];
+            String remoteFileName = results[1];
+            System.out.println("group：" +group);
+            System.out.println("remoteFileName：" + remoteFileName);
+            System.out.println("链接地址：http://192.168.211.131/" + group + "/" + remoteFileName);
+        }
+    }
+
+    /**
+     * 下载文件
+     */
+    private static void download() {
+        //下载文件到项目的根目录
+        boolean result = FastDFSUtil.download("group1",
+                "M00/00/00/wKjTg19Ms0iAFnpDAAAmdb_zhmw098.png",
+                "a.png");
+        if (result) {
+            System.out.println("文件下载成功！");
+        } else {
+            System.out.println("文件下载失败！");
+        }
+    }
+
+    /**
+     * 删除文件
+     */
+    public static void delete() {
+        boolean result = FastDFSUtil.delete("group1",
+                "M00/00/00/wKjTg19Ms0iAFnpDAAAmdb_zhmw098.png");
+        if (result) {
+            System.out.println("文件删除成功！");
+        } else {
+            System.out.println("文件删除失败！");
+        }
+    }
+}
+```
+
+## 参考
+
+[用FastDFS搭建文件管理系统（附视频和执行命令）](https://blog.csdn.net/fly_77/article/details/102843936)
+
+[linux搭建FastDFS文件服务器](https://www.cnblogs.com/zeussbook/p/10757699.html)
