@@ -1,10 +1,10 @@
-# Linux下搭建FastFDS
+# Linux下搭建FastFDS文件系统
+
+# 前言
 
 分布式文件存储，FastDFS是一种选择，它是分布式、高可用的。
 
-# 参考
-
-[学习视频](https://www.bilibili.com/video/BV1ta4y1v7Kw?p=6)
+本篇是学习[2020最新FastDFS教程-分布式文件系统FastDFS详解](https://www.bilibili.com/video/BV1ta4y1v7Kw?p=6)后总结的学习记录。
 
 ## 大纲
 
