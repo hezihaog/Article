@@ -320,7 +320,7 @@ docker run -di --name=tensquare_mysql -p 33306:3306 -e MYSQL_ROOT_PASSWORD=12345
 - 拉取镜像
 
 ```
-docker pull tomcat:7-jre7
+docker pull tomcat:7-jre8
 ```
 
 - 创建容器
@@ -329,7 +329,7 @@ docker pull tomcat:7-jre7
 
 ```
 docker run -di --name=mytomcat -p 9000:8080 
--v /usr/local/webapps:/usr/local/tomcat/webapps tomcat:7-jre7
+-v /usr/local/webapps:/usr/local/tomcat/webapps tomcat:7-jre8
 ```
 
 #### Nginx部署
