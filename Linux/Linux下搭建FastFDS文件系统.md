@@ -256,11 +256,11 @@ fdfs_trackerd /etc/fdfs/tracker.conf restart
 fdfs_storaged /etc/fdfs/storage.conf start，如果不传参数，则默认是start启动
 
 //启动
-fdfs_storaged /etc/fdfs/tracker.conf start
+fdfs_storaged /etc/fdfs/storage.conf start
 //停止
-fdfs_storaged /etc/fdfs/tracker.conf stop
+fdfs_storaged /etc/fdfs/storage.conf stop
 //重启
-fdfs_storaged /etc/fdfs/tracker.conf restart
+fdfs_storaged /etc/fdfs/storage.conf restart
 ```
 
 非必要情况，不要使用kill -9 来强制关闭进程，否则在文件上传途中，强制关闭，会导致文件信息不同步的问题
